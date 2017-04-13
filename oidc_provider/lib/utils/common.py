@@ -1,4 +1,4 @@
-from _sha256 import sha224
+from hashlib import sha224
 
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
