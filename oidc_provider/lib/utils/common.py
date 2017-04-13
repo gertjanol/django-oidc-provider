@@ -1,3 +1,5 @@
+from _sha256 import sha224
+
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 
@@ -50,6 +52,7 @@ def get_site_url(site_url=None, request=None):
                         'or set `SITE_URL` in settings, '
                         'or pass `request` object.')
 
+
 def get_issuer(site_url=None, request=None):
     """
     Construct the issuer full url. Basically is the site url with some path
@@ -84,6 +87,7 @@ def default_after_userlogin_hook(request, user, client):
     """
     return None
 
+
 def default_idtoken_processing_hook(id_token, user):
     """
     Hook to perform some additional actions ti `id_token` dictionary just before serialization.
@@ -98,3 +102,11 @@ def default_idtoken_processing_hook(id_token, user):
     :rtype dict
     """
     return id_token
+
+
+def get_browser_state_or_default(request):
+    """
+    Determine value to use as session state.
+    """
+    key = request.session.session_key or settings.get('OIDC_NONAUTHENTICATED_SESSION_MANAGEMENT_KEY')
+    return sha224(key.encode('utf-8')).hexdigest()

@@ -1,4 +1,6 @@
 import importlib
+import random
+import string
 
 from django.conf import settings
 
@@ -67,6 +69,13 @@ class DefaultSettings(object):
         OPTIONAL. If enabled, the Server will support Session Management 1.0 specification.
         """
         return False
+
+    @property
+    def OIDC_NONAUTHENTICATED_SESSION_MANAGEMENT_KEY(self):
+        """
+        OPTIONAL. Supply a fixed string to use as browser-state key for unauthenticated clients.
+        """
+        return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(100))
 
     @property
     def OIDC_SKIP_CONSENT_ALWAYS(self):
